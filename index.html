@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <label>Nodo inicio: </label>
+            </td>
+            <td>
+                <input type="text" id="init">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Nodo final: </label>
+            </td>
+            <td>
+                <input type="text" id="final"> 
+            </td>
+        </tr>
+    </table>
+    <button onclick="calcularDistancia()">Calcular distancia</button>
+    <button onclick="calcularRuta()">Calcular ruta</button>
+    <div id="resultado"></div>
+    <script>
+        const nodosString="A	B	C	D	E	F	G	H	I	J	K	L	M	N	O	P	Q	R	S	T	U	V	W	X	Y	Z	A1	B1	C1	D1	E1	F1	G1	H1	I1	J1	K1	L1	M1	N1	O1	P1	Q1	R1	S1	T1	U1	V1	W1";
+        const nodos=nodosString.split("\t");
+        const tabla_recorridos=[];
+        let i=0;
+        nodos.map(item=>{
+            tabla_recorridos.push(nodosString.split("\t"));
+        })
+        tabla_recorridos.map(item=>{
+            item[i]=0;
+            i++;
+        });
+        const tabla=`0    	 27.20 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        27.20 	0    	 25.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 25.73 	0    	 23.32 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 23.32 	0    	 26.58 	 ꝏ 	 29.64 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 13.76 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 26.58 	0    	 13.31 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 13.31 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 29.64 	 ꝏ 	 ꝏ 	0    	 21.40 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 77.62 	 90.93 	 21.40 	0    	 30.44 	 34.77 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 64.80 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 30.44 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 34.77 	 ꝏ 	0    	 43.37 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 43.37 	0    	 11.53 	 12.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.53 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 12.00 	 ꝏ 	0    	 12.00 	 12.82 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 12.00 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 12.82 	 ꝏ 	0    	 27.82 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 22.40 
+        ꝏ 	 ꝏ 	 ꝏ 	 13.76 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 27.82 	0    	 11.73 	 11.19 	 ꝏ 	 ꝏ 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 3.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.19 	 ꝏ 	0    	 4.56 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 4.56 	0    	 14.06 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 14.06 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 3.00 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    	 3.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    	 ꝏ 	 3.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 3.00 	 ꝏ 	 ꝏ 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 3.00 	 ꝏ 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    	 30.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 30.00 	0    	 22.87 	 8.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 22.87 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 8.00 	 ꝏ 	0    	 ꝏ 	 16.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    	 30.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 16.00 	 30.00 	0    	 22.87 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 22.87 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    	 30.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 30.00 	0    	 22.87 	 8.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 22.87 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 8.00 	 ꝏ 	0    	 ꝏ 	 16.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    	 30.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 16.00 	 30.00 	0    	 22.87 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 22.87 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    	 30.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 30.00 	0    	 22.87 	 8.00 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 22.87 	0    	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 11.73 	 11.73 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 8.00 	 ꝏ 	0    	 ꝏ 	 16.00 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    	 30.00 	 ꝏ 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 16.00 	 30.00 	0    	 22.87 	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 22.87 	0    	 ꝏ 
+        ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 22.40 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	 ꝏ 	0    `
+        const filas=tabla.split("\n");
+        const tabla_ponderaciones=[];
+        filas.map(item=>{
+            tabla_ponderaciones.push(item.split("\t"));
+        })
+
+        for(i in tabla_ponderaciones){
+            tabla_ponderaciones[parseInt(i)].map((item,index)=>{
+                if(item.includes("ꝏ")){
+                    tabla_ponderaciones[parseInt(i)][index]=Infinity
+                }else{
+                    if(item!=""){
+                        tabla_ponderaciones[parseInt(i)][index]=JSON.parse(item);
+                    }
+                }
+                
+            })
+        }
+        tabla_ponderaciones.map((array,index)=>{
+            array.map((num,index_num)=>{
+                tabla_ponderaciones.map((array,array_index)=>{
+                    if(num!=0||(num!=Infinity||tabla_ponderaciones[array_index][index]!=Infinity)){
+                        if(num+tabla_ponderaciones[array_index][index]<array[index_num]){
+                            array[index_num]=num+tabla_ponderaciones[array_index][index];
+                            tabla_recorridos[array_index][index_num]=nodos[index];
+                        }
+                        //array[index_num]=Math.min(array[index_num],num+tabla_ponderaciones[array_index][index]);
+                
+                    }
+                })
+            })
+        })
+
+        const busqueda=(inicio,final)=>{
+            return tabla_ponderaciones[nodos.indexOf(inicio)][nodos.indexOf(final)];
+        }
+        const recorrido=(inicio,final)=>{
+            return tabla_recorridos[nodos.indexOf(inicio)][nodos.indexOf(final)];
+        }
+        const div=document.getElementById("resultado");
+        const calcularDistancia=()=>{
+            const nodoInicio=document.getElementById("init").value;
+            const nodoFinal=document.getElementById("final").value;
+            div.innerHTML=`<h1>${busqueda(nodoInicio,nodoFinal)}</h1>`;
+        }
+        const calcularRuta=()=>{
+            const nodoInicio=document.getElementById("init").value;
+            const nodoFinal=document.getElementById("final").value;
+            div.innerHTML=`<h1>${recorrido(nodoInicio,nodoFinal)}</h1>`;
+        }
+
+    </script>
+</body>
+</html>
